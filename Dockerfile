@@ -1,18 +1,13 @@
-FROM stackbrew/ubuntu
+FROM ubuntu
 
 MAINTAINER Ukang'a Dickson
 
-EXPOSE 5432
+RUN apt-get update
+RUN apt-get install -y vim-nox wget dialog net-tools
 
-VOLUME ["/var/lib/postgres/data"]
-
-ENV USERNAME dbusername
-ENV PASS dbpasswd
 ENV CODENAME precise
-
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $CODENAME-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-
 ADD apt.postgresql.org.gpg /apt.postgresql.org.gpg
 ENV KEYRING /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg
 RUN test -e $KEYRING || touch $KEYRING
@@ -29,5 +24,12 @@ RUN chmod 0755 /start
 
 # Cleanup
 RUN apt-get clean
+
+EXPOSE 5432
+
+VOLUME ["/var/lib/postgres/data"]
+
+ENV USERNAME dbusername
+ENV PASS dbpasswd
 
 CMD ["/start"]
