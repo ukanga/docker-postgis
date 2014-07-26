@@ -5,15 +5,15 @@ MAINTAINER Ukang'a Dickson
 RUN apt-get update
 RUN apt-get install -y vim-nox wget dialog net-tools
 
-ENV CODENAME precise
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+ENV CODENAME trusty
+RUN echo "deb http://archive.ubuntu.com/ubuntu $CODENAME main universe" > /etc/apt/sources.list
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $CODENAME-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 ADD apt.postgresql.org.gpg /apt.postgresql.org.gpg
 ENV KEYRING /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg
 RUN test -e $KEYRING || touch $KEYRING
 RUN apt-key --keyring $KEYRING add /apt.postgresql.org.gpg
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.3 postgresql-contrib-9.3 Postgresql-9.3-postgis postgis
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.0-postgis-2.1 postgresql-9.3-postgis-script postgis
 
 RUN mkdir -p /data/postgres
 ADD pg_hba.conf /data/postgres/pg_hba.conf
